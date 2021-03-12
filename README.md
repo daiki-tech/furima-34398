@@ -69,13 +69,13 @@ has_one:buyer
 | phone_number     | string     | null: false       |
 | buyer            | references | foreign_key: true |
 
-has_one:buyer
+belongs_to:buyer
 
 ## buyers テーブル
 | Column  | type       | option            |
 | --------|------------|-------------------|
-| user_id | references | foreign_key: true |
-| item_id | references | foreign_key: true |
+| user    | references | foreign_key: true |
+| item    | references | foreign_key: true |
 
 belongs_to:user
 belongs_to:item
