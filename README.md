@@ -30,7 +30,6 @@ Things you may want to cover:
 | -------------------|--------|---------------------------|
 | nickname           | string | null: false               |
 | email              | string | null: false  unique:true  |
-| password           | string | null: false               |
 | encrypted_password | string | null: false               |
 | family_name        | string | null: false               |
 | given_name         | string | null: false               |
@@ -68,7 +67,7 @@ has_one:buyer
 | address          | string     | null: false       |
 | building_name    | string     |                   |
 | phone_number     | string     | null: false       |
-| buyers_id        | references | foreign_key: true |
+| buyer            | references | foreign_key: true |
 
 has_one:buyer
 
