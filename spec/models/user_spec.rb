@@ -8,14 +8,6 @@ RSpec.describe User, type: :model do
   describe 'ユーザー新規登録' do
     context '新規登録できるとき' do
       it 'nicknameとemail、passwordとpassword_confirmation、family_nameとgive_name,family_name_kanaとgive_name_kana、birthdayが存在すれば登録できる' do
-        @user.nickname = 'test'
-        @user.email = 'test@example'
-        @user.password = '000000a'
-        @user.family_name = '田中'
-        @user.give_name = '太郎'
-        @user.family_name_kana = 'タナカ'
-        @user.give_name_kana = 'タロウ'
-        @user.birthday = '1930-01-01'
         expect(@user).to be_valid
       end
       it 'nicknameが40文字以下であれば登録できる' do
