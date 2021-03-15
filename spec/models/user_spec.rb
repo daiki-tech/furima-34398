@@ -31,15 +31,16 @@ RSpec.describe User, type: :model do
           expect(@user.errors.full_messages).to include "Email can't be blank"
         end
         it '重複したemailの場合は登録できない' do
-          @user = create(:user)
-          another_user = build(:user, email: @user.email)
+          @user.save
+          another_user = FactoryBot.build(:user)
+          another_user.email = @user.email
           another_user.valid?
-          expect(@user.errors.full_messages).to include "Duplicate emails cannot be registered"
+          expect(another_user.errors.full_messages).to include "Cannot be registered with the same email"
         end
         it 'emailに@がない場合は登録できない' do
           @user.email = 'hogehuga.com'
           @user.valid?
-          expect(@user.errors.full_messages).to include "If there is no @ in the email, you cannot register"
+          expect(@user.errors.full_messages).to include "Please put on @"
         end
         it 'passwordが空だと登録できない' do
           @user.password = ''
@@ -49,12 +50,17 @@ RSpec.describe User, type: :model do
         it 'passwordが数値のみでは登録できない' do
           @user.password = '123456'
           @user.valid?
-          expect(@user.errors.full_messages).to include "Cannot register a password with only a numerical value"
+          expect(@user.errors.full_messages).to include "Please include English characters"
         end
         it 'passwordが英字のみでは登録できない' do
           @user.password = 'hogehoge'
           @user.valid?
-          expect(@user.errors.full_messages).to include "You can't register a password with only English characters"
+          expect(@user.errors.full_messages).to include "Please including numbers"
+        end
+        it 'passwordとpassword_confirmationが一致していないと登録できない' do
+          @user = build(:user, password_confirmation: "")
+          @user.valid?
+          expect(@user.errors.full_messages).to include "Password does not match"
         end
         it 'passwordが全角では登録できない' do
           @user.password = 'HOGE'
