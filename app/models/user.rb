@@ -3,16 +3,24 @@ class User < ApplicationRecord
   #has_many :items
   #has_one :buyer
 
-  #/[\p{katakana} ー－&&[^ -~｡-ﾟ]]+/
-  VALID_PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]{6,40}+\z/i
-  validates :password, format: { with: VALID_PASSWORD_REGEX }
+  with_options presence: true do
+    validates :nickname
+    validates :birthday
+    validates :password,format:{with: /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i }
+  end
 
-  VALID_NAME_REGEX = /\A[ぁ-んァ-ン一-龥々ー]+\z/
-  validates :family_name_kana, :give_name_kana, format: { with: VALID_NAME_REGEX }
+  with_options format:  {with: /\A(?:\p{Hiragana}|\p{Katakana}|[ー－]|[一-龠々])+\z/} do
+    validates :family_name 
+    validates :give_name
+  end
 
-  VALID_KANA_REGEX = /\A[ァ-ヶー－]+\z/
-  validates :family_name_kana, :give_name_kana, format: { with: VALID_KANA_REGEX }
+  with_options format: {with: /\A[ァ-ヶー－]+\z/ } do
+    validates :family_name_kana 
+    validates :give_name_kana
+  end
 
+  has_many :items
+  
   with_options presence: true do
     validates :nickname
     validates :family_name
