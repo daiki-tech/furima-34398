@@ -68,6 +68,21 @@ RSpec.describe Item, type: :model do
           @item.valid?
           expect(@item.errors.full_messages).to include "Selling price is not a number"
         end
+        it 'selling_priceが全角英語では出品できない' do
+          @item.selling_price = 'ONE BILLION'
+          @item.valid?
+          expect(@item.errors.full_messages).to include "Selling price is not a number"
+        end
+        it 'selling_priceが299円以下では出品できない' do
+          @item.selling_price = '299'
+          @item.valid?
+          expect(@item.errors.full_messages).to include "Selling price is not included in the list"
+        end
+        it 'selling_priceが10,000,000円以上では出品できない' do
+          @item.selling_price = 10000000
+          @item.valid?
+          expect(@item.errors.full_messages).to include "Selling price is not included in the list"
+        end
         it 'userが紐づいていないと出品できない' do
           @item.user = nil
           @item.valid?
