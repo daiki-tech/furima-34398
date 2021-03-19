@@ -69,7 +69,7 @@ RSpec.describe Item, type: :model do
           expect(@item.errors.full_messages).to include "Selling price is not a number"
         end
         it 'selling_priceが全角英語では出品できない' do
-          @item.selling_price = 'ONE BILLION'
+          @item.selling_price = 'ONE　BILLION'
           @item.valid?
           expect(@item.errors.full_messages).to include "Selling price is not a number"
         end
