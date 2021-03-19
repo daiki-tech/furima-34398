@@ -60,18 +60,19 @@ RSpec.describe Item, type: :model do
         end
         it 'selling_priceが半角英数字混合では出品できない' do
           @item.selling_price = '2000a'
+          binding.pry
           @item.valid?
           expect(@item.errors.full_messages).to include "Selling price is not a number"
         end
         it 'selling_priceが半角英語では出品できない' do
           @item.selling_price = 'one billion'
           @item.valid?
-          expect(@item.errors.full_messages).to include "Selling price is not a number"
+          expect(@item.errors.full_messages).to include "Selling price is not included in the list"
         end
         it 'selling_priceが全角英語では出品できない' do
           @item.selling_price = 'ONE　BILLION'
           @item.valid?
-          expect(@item.errors.full_messages).to include "Selling price is not a number"
+          expect(@item.errors.full_messages).to include "Selling price is not included in the list"
         end
         it 'selling_priceが299円以下では出品できない' do
           @item.selling_price = 299
