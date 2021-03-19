@@ -60,7 +60,6 @@ RSpec.describe Item, type: :model do
         end
         it 'selling_priceが半角英数字混合では出品できない' do
           @item.selling_price = '2000a'
-          binding.pry
           @item.valid?
           expect(@item.errors.full_messages).to include "Selling price is not a number"
         end
