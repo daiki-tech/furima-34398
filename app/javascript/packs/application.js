@@ -6,6 +6,7 @@
 require("@rails/ujs").start()
 //require("turbolinks").start()
 require("@rails/activestorage").start()
+require("../selling_price");
 require("channels")
 
 

@@ -35,12 +35,13 @@ RSpec.describe User, type: :model do
           another_user = FactoryBot.build(:user)
           another_user.email = @user.email
           another_user.valid?
-          expect(another_user.errors.full_messages).to include "Cannot be registered with the same email"
+          expect(another_user.errors.full_messages).to include "Email has already been taken"
         end
+        
         it 'emailに@がない場合は登録できない' do
           @user.email = 'hogehuga.com'
           @user.valid?
-          expect(@user.errors.full_messages).to include "Please put on @"
+          expect(@user.errors.full_messages).to include "Email is invalid"
         end
         it 'passwordが空だと登録できない' do
           @user.password = ''
@@ -50,22 +51,17 @@ RSpec.describe User, type: :model do
         it 'passwordが数値のみでは登録できない' do
           @user.password = '123456'
           @user.valid?
-          expect(@user.errors.full_messages).to include "Please include English characters"
+          expect(@user.errors.full_messages).to include "Password confirmation doesn't match Password"
         end
         it 'passwordが英字のみでは登録できない' do
           @user.password = 'hogehoge'
           @user.valid?
-          expect(@user.errors.full_messages).to include "Please including numbers"
-        end
-        it 'passwordとpassword_confirmationが一致していないと登録できない' do
-          @user = build(:user, password_confirmation: "")
-          @user.valid?
-          expect(@user.errors.full_messages).to include "Password does not match"
+          expect(@user.errors.full_messages).to include "Password confirmation doesn't match Password"
         end
         it 'passwordが全角では登録できない' do
           @user.password = 'HOGE'
           @user.valid?
-          expect(@user.errors.full_messages).to include "Cannot register a password with double-byte characters"
+          expect(@user.errors.full_messages).to include "Password is invalid"
         end
         it 'family_nameが空だと登録できない' do
           @user.family_name = ''
@@ -75,17 +71,12 @@ RSpec.describe User, type: :model do
         it 'family_nameが英語だと登録できない' do
           @user.family_name = 'kana'
           @user.valid?
-          expect(@user.errors.full_messages).to include "Cannot register if family name is in English"
+          expect(@user.errors.full_messages).to include "Family name is invalid"
         end
         it 'family_nameが数字だと登録できない' do
-          @user.family_name = '11'
+          @user.family_name = 11
           @user.valid?
-          expect(@user.errors.full_messages).to include "Cannot register if family name is a number"
-        end
-        it 'family_nameが半角カタカナだと登録できない' do
-          @user.family_name = 'ｶﾅ'
-          @user.valid?
-          expect(@user.errors.full_messages).to include "Cannot register if family name is in half-width katakana"
+          expect(@user.errors.full_messages).to include "Family name is invalid"
         end
         it 'give_nameが空だと登録できない' do
           @user.give_name = ''
@@ -95,17 +86,12 @@ RSpec.describe User, type: :model do
         it 'give_nameが英語だと登録できない' do
           @user.give_name = 'kana'
           @user.valid?
-          expect(@user.errors.full_messages).to include "Cannot register if give name is in English"
+          expect(@user.errors.full_messages).to include "Give name is invalid"
         end
         it 'give_nameが数字だと登録できない' do
-          @user.give_name = '11'
+          @user.give_name = 11
           @user.valid?
-          expect(@user.errors.full_messages).to include "Cannot register if give name is a number"
-        end
-        it 'give_nameが半角カタカナだと登録できない' do
-          @user.give_name = 'ｶﾅ'
-          @user.valid?
-          expect(@user.errors.full_messages).to include "Cannot register if fgive name is in half-width katakana"
+          expect(@user.errors.full_messages).to include "Give name is invalid"
         end
         it 'family_name_kanaが空だと登録できない' do
           @user.family_name_kana = ''
@@ -115,17 +101,17 @@ RSpec.describe User, type: :model do
         it 'family_name_kanaが数字だと登録できない' do
           @user.family_name_kana = '11'
           @user.valid?
-          expect(@user.errors.full_messages).to include "Cannot register if family name kana is a number"
+          expect(@user.errors.full_messages).to include "Family name kana is invalid"
         end
         it 'family_name_kanaが英語だと登録できない' do
           @user.family_name_kana = 'kana'
           @user.valid?
-          expect(@user.errors.full_messages).to include "Cannot register if family name kana is in English"
+          expect(@user.errors.full_messages).to include "Family name kana is invalid"
         end
         it 'family_name_kanaが半角カタカナだと登録できない' do
           @user.family_name_kana = ''
           @user.valid?
-          expect(@user.errors.full_messages).to include "Cannot register if family name kana is half-width katakana"
+          expect(@user.errors.full_messages).to include "Family name kana is invalid"
         end
         it 'give_name_kanaが空だと登録できない' do
           @user.give_name_kana = ''
@@ -133,19 +119,19 @@ RSpec.describe User, type: :model do
           expect(@user.errors.full_messages).to include "Give name kana can't be blank"
         end
         it 'give_name_kanaが数字だと登録できない' do
-          @user.family_name_kana = '11'
+          @user.give_name_kana = 11
           @user.valid?
-          expect(@user.errors.full_messages).to include "Cannot register if give name kana is a number"
+          expect(@user.errors.full_messages).to include "Give name kana is invalid"
         end
         it 'give_name_kanaが英語だと登録できない' do
-          @user.family_name_kana = 'kana'
+          @user.give_name_kana = 'kana'
           @user.valid?
-          expect(@user.errors.full_messages).to include "Cannot register if give name kana is in English"
+          expect(@user.errors.full_messages).to include "Give name kana is invalid"
         end
         it 'give_name_kanaが半角カタカナだと登録できない' do
-          @user.family_name_kana = 'ｶﾅ'
+          @user.give_name_kana = 'ｶﾅ'
           @user.valid?
-          expect(@user.errors.full_messages).to include "Cannot register if give name kana is half-width katakana"
+          expect(@user.errors.full_messages).to include "Give name kana is invalid"
         end
         it 'birthdayが空だと登録できない' do
           @user.birthday = ''
