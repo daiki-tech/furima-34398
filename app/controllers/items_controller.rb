@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!,  only: [:new, :create]
   before_action :set_item,            only: [:show, :edit]
-  before_action :sold_out_item,       only: [:index]
+  # before_action :sold_out_item,       only: [:index]
 
   def index
     @items = Item.all.order('created_at DESC')
@@ -23,8 +23,8 @@ class ItemsController < ApplicationController
   def show
   end
 
-  def edit
-  end
+  # def edit
+  # end
 
   # def update
   #   @item = Item.find(params[:id])
@@ -54,7 +54,7 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
   end
 
-  def sold_out_item
-    redirect_to root_path if @item.present?
-  end
+  # def sold_out_item
+  #   redirect_to root_path if @item.present?
+  # end
 end
