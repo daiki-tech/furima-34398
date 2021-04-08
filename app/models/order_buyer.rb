@@ -14,8 +14,8 @@ class OrderBuyer
   end
 
   def save
-    buyer = Buyer.create!(user_id: user_id, item_id: item_id)
-    order = Order.create!(postal_code: postal_code, shipping_area_id: shipping_area_id, address: address, city: city, phone_number: phone_number, building_name: building_name, buyer_id: buyer.id)
+    buyer = Buyer.create(user_id: user_id, item_id: item_id)
+
   end
 end
 
