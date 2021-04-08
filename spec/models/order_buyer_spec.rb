@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe OrderBuyer, type: :model do
     before do
-      @order_buyer = FactoryBot.build(:order_buyer)
+      user = FactoryBot.create(:user, email: "tete@tete")
+      item = FactoryBot.create(:item)
+      @order_buyer = FactoryBot.build(:order_buyer, user_id: user.id, item_id: item.id)
+      sleep(1)
     end
 
     describe '購入内容確認' do
@@ -69,6 +72,18 @@ RSpec.describe OrderBuyer, type: :model do
           @order_buyer.phone_number = 'あイ鵜eooooooo'
           @order_buyer.valid?
           expect(@order_buyer.errors.full_messages).to include("Phone number is invalid")
+        end
+
+        it "userが紐づいていないと購入できないこと" do
+          @order_buyer.user_id = nil
+          @order_buyer.valid?
+          expect(@order_buyer.errors.full_messages).to include("User can't be blank")
+        end
+
+        it "itemが紐づいていないと購入できないこと" do
+          @order_buyer.item_id = nil
+          @order_buyer.valid?
+          expect(@order_buyer.errors.full_messages).to include("Item can't be blank")
         end
       end
     end
