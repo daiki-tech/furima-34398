@@ -13,6 +13,11 @@ RSpec.describe OrderBuyer, type: :model do
         expect(@order_buyer).to be_valid
       end
 
+      it "building_nameが空でも購入できる時" do
+        @order_buyer.building_name = ''
+        expect(@order_buyer).to be_valid
+      end
+
       context '購入できない時' do
         it "tokenが空では購入できないこと" do
           @order_buyer.token =  ''
@@ -66,6 +71,12 @@ RSpec.describe OrderBuyer, type: :model do
           @order_buyer.phone_number = ''
           @order_buyer.valid?
           expect(@order_buyer.errors.full_messages).to include("Phone number can't be blank")
+        end
+
+        it "phone_numberが１１桁以上では購入できないこと" do
+          @order_buyer.phone_number = '012345678910'
+          @order_buyer.valid?
+          expect(@order_buyer.errors.full_messages).to include("Phone number is invalid")
         end
 
         it "phone_numberが平仮名、カタカナ、漢字、英語では購入できないこと" do
