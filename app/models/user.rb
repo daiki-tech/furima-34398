@@ -1,6 +1,7 @@
 class User < ApplicationRecord
-  has_many        :items
-  # has_one         :buyer
+  has_many :items
+  has_many :buyers
+
   validates :password,format:{with: /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i }
   with_options format:  {with: /\A(?:\p{Hiragana}|\p{Katakana}|[ー－]|[一-龠々])+\z/} do
     validates :family_name 
